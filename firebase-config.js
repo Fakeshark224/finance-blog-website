@@ -42,12 +42,13 @@
 // ⚠️  REPLACE THIS WITH YOUR OWN FIREBASE CONFIG
 // Get yours from: https://console.firebase.google.com/ → Project Settings → Your apps
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDlz_FaTORWlNeUoVwbMmbSOIVKrf9KVe4",
+  authDomain: "prospr-blog.firebaseapp.com",
+  projectId: "prospr-blog",
+  storageBucket: "prospr-blog.firebasestorage.app",
+  messagingSenderId: "788378051333",
+  appId: "1:788378051333:web:8664662d08ae63605c0d6c",
+  measurementId: "G-BTH6Z33B4E"
 };
 
 // Initialize Firebase
