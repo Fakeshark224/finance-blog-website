@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Post — Prospr</title>
+  <meta name="description" content="Admin post editor.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+  
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    .admin-form-group { margin-bottom: var(--space-6); }
+    .admin-label { display: block; margin-bottom: var(--space-2); font-weight: 600; color: var(--color-text-primary); }
+    .admin-input, .admin-select, .admin-textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; font-family: inherit; font-size: 1rem; }
+    .admin-textarea { min-height: 150px; resize: vertical; }
+    .admin-textarea.large { min-height: 400px; }
+    .admin-row { display: flex; gap: var(--space-4); margin-bottom: var(--space-6); }
+    .admin-row > * { flex: 1; }
+    .btn-group { display: flex; gap: var(--space-4); margin-top: var(--space-8); }
+    .preview-box { margin-top: var(--space-4); max-width: 200px; height: 120px; border-radius: 8px; overflow: hidden; background: #eee; }
+    .preview-box img { width: 100%; height: 100%; object-fit: cover; }
+    .checkbox-group { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-4); }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header" id="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" id="logo">prosp<span>.</span>r</a>
+      <nav class="nav-links" id="nav-links">
+        <a href="admin.html">Dashboard</a>
+      </nav>
+      <div class="header-actions">
+        <div class="header-auth" id="header-auth"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <section class="container" style="max-width: 800px; padding: var(--space-12) 0;">
+    <h1 style="font-size: var(--font-size-3xl); margin-bottom: var(--space-8);" id="page-title">Create New Post</h1>
+    
+    <form id="post-form">
+      <input type="hidden" id="post-id">
+      
+      <div class="admin-form-group">
+        <label class="admin-label" for="title">Title</label>
+        <input type="text" id="title" class="admin-input" required placeholder="Enter post title...">
+      </div>
+
+      <div class="admin-row">
+        <div>
+          <label class="admin-label" for="category">Category</label>
+          <select id="category" class="admin-select" required>
+            <option value="Investing">Investing</option>
+            <option value="Budgeting">Budgeting</option>
+            <option value="Side Hustles">Side Hustles</option>
+            <option value="Crypto">Crypto</option>
+            <option value="Career">Career</option>
+            <option value="Taxes">Taxes</option>
+          </select>
+        </div>
+        <div>
+          <label class="admin-label" for="tags">Tags (comma separated)</label>
+          <input type="text" id="tags" class="admin-input" placeholder="e.g. passive income, real estate">
+        </div>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label" for="imageUrl">Featured Image URL</label>
+        <input type="text" id="imageUrl" class="admin-input" required placeholder="images/post_investing.png or https://...">
+        <div class="preview-box">
+          <img id="image-preview" src="" alt="Image preview" onerror="this.src='https://via.placeholder.com/200x120?text=No+Image'">
+        </div>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label" for="excerpt">Excerpt (Short Summary)</label>
+        <textarea id="excerpt" class="admin-textarea" required placeholder="A brief 1-2 sentence summary of the article..."></textarea>
+      </div>
+
+      <div class="admin-form-group">
+        <label class="admin-label" for="content">Content (HTML allowed)</label>
+        <textarea id="content" class="admin-textarea large" required placeholder="<h2>Heading</h2><p>Paragraph text...</p>"></textarea>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="isDraft" style="width:18px;height:18px;">
+        <label for="isDraft" style="font-weight:600; cursor:pointer;">Save as Draft (Do not publish yet)</label>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary" id="submit-btn" style="width:100%;">Publish Post</button>
+        <button type="button" class="btn btn-outline" onclick="window.location.href='admin.html'" style="width:100%;">Cancel</button>
+      </div>
+    </form>
+  </section>
+
+  <script src="firebase-config.js"></script>
+  <script src="posts.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('post-form');
+      const imageUrlInput = document.getElementById('imageUrl');
+      const imagePreview = document.getElementById('image-preview');
+      
+      // Update preview on image URL change
+      imageUrlInput.addEventListener('input', (e) => {
+        imagePreview.src = e.target.value || 'https://via.placeholder.com/200x120?text=No+Image';
+      });
+
+      // Check auth and load edit data
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (!user || user.email !== window.ProsperAuth.ADMIN_EMAIL) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('edit');
+
+        if (editId) {
+          document.getElementById('page-title').textContent = 'Edit Post';
+          document.getElementById('submit-btn').textContent = 'Update Post';
+          
+          try {
+            const post = await window.ProsperPosts.getPost(editId);
+            if (post) {
+              document.getElementById('post-id').value = editId;
+              document.getElementById('title').value = post.title || '';
+              document.getElementById('category').value = post.category || 'Investing';
+              document.getElementById('tags').value = (post.tags || []).join(', ');
+              document.getElementById('imageUrl').value = post.imageUrl || '';
+              document.getElementById('excerpt').value = post.excerpt || '';
+              document.getElementById('content').value = post.content || '';
+              document.getElementById('isDraft').checked = post.isDraft || false;
+              
+              imagePreview.src = post.imageUrl || 'https://via.placeholder.com/200x120?text=No+Image';
+            }
+          } catch (error) {
+            console.error("Error loading post:", error);
+            alert("Could not load post data.");
+          }
+        }
+      });
+
+      // Handle form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Saving...';
+
+        const postId = document.getElementById('post-id').value;
+        const postData = {
+          title: document.getElementById('title').value,
+          category: document.getElementById('category').value,
+          tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t),
+          imageUrl: document.getElementById('imageUrl').value,
+          excerpt: document.getElementById('excerpt').value,
+          content: document.getElementById('content').value,
+          isDraft: document.getElementById('isDraft').checked,
+          isPublished: !document.getElementById('isDraft').checked
+        };
+
+        try {
+          if (postId) {
+            await window.ProsperPosts.updatePost(postId, postData);
+            alert('Post updated successfully!');
+            window.location.href = `article.html?id=${postId}`;
+          } else {
+            postData.authorName = 'Prospr Editorial Team';
+            postData.authorEmail = window.ProsperAuth.ADMIN_EMAIL;
+            const newId = await window.ProsperPosts.createPost(postData);
+            alert('Post created successfully!');
+            window.location.href = `article.html?id=${newId}`;
+          }
+        } catch (error) {
+          console.error("Error saving post:", error);
+          alert("Error saving post. Check console.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = postId ? 'Update Post' : 'Publish Post';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
