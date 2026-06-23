@@ -1,6 +1,6 @@
 // auth.js
 (function() {
-  const ADMIN_EMAIL = 'sterlingmereholdings@gmail.com';
+  const ADMIN_EMAIL = 'whitcroftholdings@gmail.com';
   
   const ProsperAuth = {
     ADMIN_EMAIL,
