@@ -30,7 +30,7 @@
         html = `
           <span style="font-size:0.875rem; font-weight:600; color:var(--color-text-primary); margin-right:1rem;">Hi, ${name}</span>
           ${this.isAdmin() ? '<a href="admin.html" style="font-size:0.875rem; font-weight:600; color:var(--color-primary); margin-right:1rem; text-decoration:none;">Admin</a>' : ''}
-          <button data-auth-action="logout" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size:0.875rem;">Sign Out</button>
+          <button onclick="window.ProsperAuth.logout()" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size:0.875rem;">Sign Out</button>
         `;
       } else {
         html = `
@@ -93,7 +93,7 @@
           
           <div style="text-align:center; margin-top:1.5rem; font-size:0.875rem; color:var(--color-text-muted);">
             ${isLogin ? 'Don\'t have an account?' : 'Already have an account?'}
-            <a href="#" data-auth-action="${isLogin ? 'register' : 'login'}" style="color:var(--color-primary); font-weight:600; text-decoration:none;">
+            <a href="#" onclick="event.preventDefault(); window.ProsperAuth.show${isLogin ? 'Register' : 'Login'}Modal()" style="color:var(--color-primary); font-weight:600; text-decoration:none;">
               ${isLogin ? 'Sign up' : 'Sign in'}
             </a>
           </div>
