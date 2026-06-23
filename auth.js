@@ -27,11 +27,37 @@
       let html = '';
       if (user) {
         const name = user.displayName || user.email.split('@')[0];
+        const initial = name.charAt(0).toUpperCase();
         html = `
-          <span style="font-size:0.875rem; font-weight:600; color:var(--color-text-primary); margin-right:1rem;">Hi, ${name}</span>
-          ${this.isAdmin() ? '<a href="admin.html" style="font-size:0.875rem; font-weight:600; color:var(--color-primary); margin-right:1rem; text-decoration:none;">Admin</a>' : ''}
-          <a href="create-post.html" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.875rem; margin-right:1rem; text-decoration:none;">Write Post</a>
-          <button onclick="window.ProsperAuth.logout()" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size:0.875rem;">Sign Out</button>
+          <div class="nav-profile-wrapper">
+            <div class="nav-profile-btn">
+              <div class="nav-profile-avatar">${initial}</div>
+              <span class="nav-profile-name">${name}</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:4px;"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="nav-profile-dropdown">
+              <div style="padding: 8px 16px; margin-bottom: 4px;">
+                <div style="font-size: 0.75rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Signed in as</div>
+                <div style="font-weight: 600; font-size: 0.875rem; color: var(--color-text-primary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${user.email}</div>
+              </div>
+              <div class="nav-dropdown-divider"></div>
+              <a href="create-post.html" class="nav-dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                Write Post
+              </a>
+              ${this.isAdmin() ? `
+              <a href="admin.html" class="nav-dropdown-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                Admin Dashboard
+              </a>
+              ` : ''}
+              <div class="nav-dropdown-divider"></div>
+              <button onclick="window.ProsperAuth.logout()" class="nav-dropdown-item logout">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Sign Out
+              </button>
+            </div>
+          </div>
         `;
       } else {
         html = `

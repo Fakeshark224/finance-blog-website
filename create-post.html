@@ -13,17 +13,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
 
   <style>
-    .admin-form-group { margin-bottom: var(--space-6); }
-    .admin-label { display: block; margin-bottom: var(--space-2); font-weight: 600; color: var(--color-text-primary); }
-    .admin-input, .admin-select, .admin-textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; font-family: inherit; font-size: 1rem; }
-    .admin-textarea { min-height: 150px; resize: vertical; }
-    .admin-textarea.large { min-height: 400px; }
-    .admin-row { display: flex; gap: var(--space-4); margin-bottom: var(--space-6); }
-    .admin-row > * { flex: 1; }
-    .btn-group { display: flex; gap: var(--space-4); margin-top: var(--space-8); }
-    .preview-box { margin-top: var(--space-4); max-width: 200px; height: 120px; border-radius: 8px; overflow: hidden; background: #eee; }
-    .preview-box img { width: 100%; height: 100%; object-fit: cover; }
-    .checkbox-group { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-4); }
+    /* Premium overrides if needed specific to this page */
   </style>
 </head>
 <body>
@@ -42,64 +32,74 @@
   </header>
 
   <!-- ========== MAIN CONTENT ========== -->
-  <section class="container" style="max-width: 800px; padding: var(--space-12) 0;">
-    <h1 style="font-size: var(--font-size-3xl); margin-bottom: var(--space-8);" id="page-title">Create New Post</h1>
-    
-    <form id="post-form">
-      <input type="hidden" id="post-id">
+  <main class="editor-page">
+    <div class="container" style="max-width: 800px;">
       
-      <div class="admin-form-group">
-        <label class="admin-label" for="title">Title</label>
-        <input type="text" id="title" class="admin-input" required placeholder="Enter post title...">
-      </div>
-
-      <div class="admin-row">
-        <div>
-          <label class="admin-label" for="category">Category</label>
-          <select id="category" class="admin-select" required>
-            <option value="Investing">Investing</option>
-            <option value="Budgeting">Budgeting</option>
-            <option value="Side Hustles">Side Hustles</option>
-            <option value="Crypto">Crypto</option>
-            <option value="Career">Career</option>
-            <option value="Taxes">Taxes</option>
-          </select>
+      <div class="premium-card">
+        <div class="premium-card-header">
+          <h1 id="page-title">Write a Post</h1>
         </div>
-        <div>
-          <label class="admin-label" for="tags">Tags (comma separated)</label>
-          <input type="text" id="tags" class="admin-input" placeholder="e.g. passive income, real estate">
+        
+        <div class="premium-card-body">
+          <form id="post-form">
+            <input type="hidden" id="post-id">
+            
+            <div class="premium-form-group">
+              <label class="premium-label" for="title">Article Title</label>
+              <input type="text" id="title" class="premium-input" required placeholder="Enter an engaging title...">
+            </div>
+
+            <div class="premium-row">
+              <div class="premium-form-group">
+                <label class="premium-label" for="category">Category</label>
+                <select id="category" class="premium-select" required>
+                  <option value="Investing">Investing</option>
+                  <option value="Budgeting">Budgeting</option>
+                  <option value="Side Hustles">Side Hustles</option>
+                  <option value="Crypto">Crypto</option>
+                  <option value="Career">Career</option>
+                  <option value="Taxes">Taxes</option>
+                </select>
+              </div>
+              <div class="premium-form-group">
+                <label class="premium-label" for="tags">Tags</label>
+                <input type="text" id="tags" class="premium-input" placeholder="e.g. passive income, real estate">
+              </div>
+            </div>
+
+            <div class="premium-form-group">
+              <label class="premium-label" for="imageUrl">Cover Image URL</label>
+              <input type="text" id="imageUrl" class="premium-input" required placeholder="https://...">
+              <div style="margin-top:var(--space-4); border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--color-border-light); max-width: 300px; aspect-ratio: 16/9;">
+                <img id="image-preview" src="" alt="Cover preview" onerror="this.src='https://via.placeholder.com/600x400?text=Cover+Image+Preview'" style="width:100%; height:100%; object-fit:cover;">
+              </div>
+            </div>
+
+            <div class="premium-form-group">
+              <label class="premium-label" for="excerpt">Brief Summary</label>
+              <textarea id="excerpt" class="premium-textarea" required placeholder="Write a compelling 1-2 sentence summary to hook readers..."></textarea>
+            </div>
+
+            <div class="premium-form-group">
+              <label class="premium-label" for="content">Article Content (HTML)</label>
+              <textarea id="content" class="premium-textarea large" required placeholder="<h2>Start writing your masterpiece...</h2><p></p>"></textarea>
+            </div>
+
+            <div class="premium-checkbox-wrapper">
+              <input type="checkbox" id="isDraft" class="premium-checkbox">
+              <label for="isDraft" class="premium-checkbox-label">Save as Draft (Hide from public feed)</label>
+            </div>
+
+            <div class="premium-actions">
+              <button type="button" class="btn btn-outline" onclick="window.history.back()" style="padding: var(--space-3) var(--space-6);">Cancel</button>
+              <button type="submit" class="btn btn-publish" id="submit-btn">Publish Article</button>
+            </div>
+          </form>
         </div>
       </div>
 
-      <div class="admin-form-group">
-        <label class="admin-label" for="imageUrl">Featured Image URL</label>
-        <input type="text" id="imageUrl" class="admin-input" required placeholder="images/post_investing.png or https://...">
-        <div class="preview-box">
-          <img id="image-preview" src="" alt="Image preview" onerror="this.src='https://via.placeholder.com/200x120?text=No+Image'">
-        </div>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label" for="excerpt">Excerpt (Short Summary)</label>
-        <textarea id="excerpt" class="admin-textarea" required placeholder="A brief 1-2 sentence summary of the article..."></textarea>
-      </div>
-
-      <div class="admin-form-group">
-        <label class="admin-label" for="content">Content (HTML allowed)</label>
-        <textarea id="content" class="admin-textarea large" required placeholder="<h2>Heading</h2><p>Paragraph text...</p>"></textarea>
-      </div>
-
-      <div class="checkbox-group">
-        <input type="checkbox" id="isDraft" style="width:18px;height:18px;">
-        <label for="isDraft" style="font-weight:600; cursor:pointer;">Save as Draft (Do not publish yet)</label>
-      </div>
-
-      <div class="btn-group">
-        <button type="submit" class="btn btn-primary" id="submit-btn" style="width:100%;">Publish Post</button>
-        <button type="button" class="btn btn-outline" onclick="window.location.href='admin.html'" style="width:100%;">Cancel</button>
-      </div>
-    </form>
-  </section>
+    </div>
+  </main>
 
   <script src="firebase-config.js"></script>
   <script src="posts.js"></script>
