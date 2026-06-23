@@ -54,10 +54,16 @@
     async getAllPosts(limitCount = 12) {
       const snapshot = await db.collection(COLLECTION)
         .where('isPublished', '==', true)
-        .orderBy('createdAt', 'desc')
-        .limit(limitCount)
         .get();
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+      let posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      // Sort in JS to avoid requiring a Firebase Composite Index
+      posts.sort((a, b) => {
+        const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
+      });
+      return posts.slice(0, limitCount);
     },
 
     async getPostsByCategory(category, limitCount = 12) {
@@ -65,10 +71,15 @@
       const snapshot = await db.collection(COLLECTION)
         .where('isPublished', '==', true)
         .where('category', '==', category)
-        .orderBy('createdAt', 'desc')
-        .limit(limitCount)
         .get();
-      return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+      let posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      posts.sort((a, b) => {
+        const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
+      });
+      return posts.slice(0, limitCount);
     },
 
     async searchPosts(query) {
@@ -86,13 +97,19 @@
       const snapshot = await db.collection(COLLECTION)
         .where('isPublished', '==', true)
         .where('category', '==', category)
-        .limit(limitCount + 1)
         .get();
       
-      return snapshot.docs
+      let posts = snapshot.docs
         .map(doc => ({ id: doc.id, ...doc.data() }))
-        .filter(post => post.id !== excludeId)
-        .slice(0, limitCount);
+        .filter(post => post.id !== excludeId);
+        
+      posts.sort((a, b) => {
+        const timeA = a.createdAt ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
+      });
+      
+      return posts.slice(0, limitCount);
     },
 
     async getRecentNotifications(limitCount = 5) {
