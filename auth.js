@@ -34,7 +34,7 @@
         `;
       } else {
         html = `
-          <button data-auth-action="login" style="background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Log In</button>
+          <button data-auth-action="login" style="background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Sign In</button>
           <button data-auth-action="register" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.875rem;">Subscribe</button>
         `;
       }
@@ -84,13 +84,13 @@
             
             <div id="auth-error" style="color:#DE350B; font-size:0.875rem; margin-bottom:1rem; display:none;"></div>
             
-            <button type="submit" class="btn btn-primary" style="width:100%;" id="auth-submit-btn">${isLogin ? 'Log In' : 'Sign Up'}</button>
+            <button type="submit" class="btn btn-primary" style="width:100%;" id="auth-submit-btn">${isLogin ? 'Sign In' : 'Sign Up'}</button>
           </form>
           
           <div style="text-align:center; margin-top:1.5rem; font-size:0.875rem; color:var(--color-text-muted);">
             ${isLogin ? 'Don\'t have an account?' : 'Already have an account?'}
             <a href="#" data-auth-action="${isLogin ? 'register' : 'login'}" style="color:var(--color-primary); font-weight:600; text-decoration:none;">
-              ${isLogin ? 'Sign up' : 'Log in'}
+              ${isLogin ? 'Sign up' : 'Sign in'}
             </a>
           </div>
         </div>
@@ -145,7 +145,7 @@
         errorDiv.textContent = err.message;
         errorDiv.style.display = 'block';
         submitBtn.disabled = false;
-        submitBtn.textContent = mode === 'login' ? 'Log In' : 'Sign Up';
+        submitBtn.textContent = mode === 'login' ? 'Sign In' : 'Sign Up';
       }
     },
 
