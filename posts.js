@@ -12,6 +12,18 @@
       postData.viewCount = 0;
       
       const docRef = await db.collection(COLLECTION).add(postData);
+      
+      // Notify everyone
+      try {
+        await db.collection('notifications').add({
+          postId: docRef.id,
+          postTitle: postData.title,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch(e) {
+        console.error("Error creating notification:", e);
+      }
+      
       return docRef.id;
     },
 
@@ -81,6 +93,19 @@
         .map(doc => ({ id: doc.id, ...doc.data() }))
         .filter(post => post.id !== excludeId)
         .slice(0, limitCount);
+    },
+
+    async getRecentNotifications(limitCount = 5) {
+      try {
+        const snapshot = await db.collection('notifications')
+          .orderBy('createdAt', 'desc')
+          .limit(limitCount)
+          .get();
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      } catch (e) {
+        console.error("Error fetching notifications:", e);
+        return [];
+      }
     },
 
     generateSlug(title) {

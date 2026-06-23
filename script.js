@@ -9,6 +9,7 @@
       this.initNewsletter();
       this.initCookieBanner();
       this.initScrollReveal();
+      this.initNotifications();
       
       // Page specific logic
       if (document.getElementById('post-grid')) {
@@ -37,6 +38,77 @@
       });
     },
 
+    // 1b. NOTIFICATIONS BELL
+    initNotifications() {
+      const headerActions = document.querySelector('.header-actions');
+      if (!headerActions || !window.ProsperPosts) return;
+
+      const bellHtml = `
+        <div class="nav-bell-wrapper" style="position:relative; cursor:pointer; margin-right:1rem; display:flex; align-items:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <div id="nav-bell-dot" style="display:none; position:absolute; top:-2px; right:-2px; width:8px; height:8px; background:var(--color-error); border-radius:50%; border:2px solid var(--color-bg);"></div>
+          
+          <div class="nav-bell-dropdown" style="position:absolute; top:calc(100% + 12px); right:-10px; width:280px; background:var(--color-bg); border:1px solid var(--color-border-light); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); opacity:0; visibility:hidden; transform:translateY(10px); transition:all var(--duration-fast); z-index:100000; padding:var(--space-2) 0; cursor:default;">
+            <div style="padding: 8px 16px; border-bottom:1px solid var(--color-border-light); font-weight:700; font-size:0.875rem;">Recent Updates</div>
+            <div id="nav-bell-list">
+              <div style="padding:16px; text-align:center; color:var(--color-text-muted); font-size:0.875rem;">Loading...</div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      const authDiv = document.getElementById('header-auth');
+      if (authDiv) {
+        authDiv.insertAdjacentHTML('beforebegin', bellHtml);
+      } else {
+        headerActions.insertAdjacentHTML('afterbegin', bellHtml);
+      }
+
+      const bellWrapper = document.querySelector('.nav-bell-wrapper');
+      const bellDropdown = document.querySelector('.nav-bell-dropdown');
+      const bellDot = document.getElementById('nav-bell-dot');
+      const bellList = document.getElementById('nav-bell-list');
+
+      bellWrapper.addEventListener('mouseenter', async () => {
+        bellDropdown.style.opacity = '1';
+        bellDropdown.style.visibility = 'visible';
+        bellDropdown.style.transform = 'translateY(0)';
+        bellDot.style.display = 'none'; // mark read visually
+        
+        const notifications = await window.ProsperPosts.getRecentNotifications(5);
+        if (notifications.length === 0) {
+          bellList.innerHTML = '<div style="padding:16px; text-align:center; color:var(--color-text-muted); font-size:0.875rem;">No new notifications</div>';
+        } else {
+          bellList.innerHTML = notifications.map(n => `
+            <a href="article.html?id=${n.postId}" style="display:block; padding:12px 16px; text-decoration:none; border-bottom:1px solid var(--color-border-light); transition:background 0.2s;">
+              <div style="font-size:0.75rem; color:var(--color-primary); font-weight:700; margin-bottom:4px;">NEW POST</div>
+              <div style="font-size:0.875rem; color:var(--color-text-primary); font-weight:600;">${n.postTitle}</div>
+            </a>
+          `).join('');
+        }
+      });
+
+      bellWrapper.addEventListener('mouseleave', () => {
+        bellDropdown.style.opacity = '0';
+        bellDropdown.style.visibility = 'hidden';
+        bellDropdown.style.transform = 'translateY(10px)';
+      });
+
+      // Real-time listener for the red dot
+      try {
+        firebase.firestore().collection('notifications')
+          .orderBy('createdAt', 'desc')
+          .limit(1)
+          .onSnapshot(snapshot => {
+            if (!snapshot.empty) {
+              const latest = snapshot.docs[0].data();
+              if (latest.createdAt && latest.createdAt.toDate() > new Date(Date.now() - 60000)) {
+                bellDot.style.display = 'block';
+              }
+            }
+          });
+      } catch(e) {}
+    },
     // 2. MOBILE NAV
     initMobileNav() {
       const menuToggle = document.getElementById('menu-toggle');

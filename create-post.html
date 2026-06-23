@@ -184,9 +184,9 @@
           }
         } catch (error) {
           console.error("Error saving post:", error);
-          alert("Error saving post. Check console.");
+          alert("Firebase Error: " + error.message);
           submitBtn.disabled = false;
-          submitBtn.textContent = postId ? 'Update Post' : 'Publish Post';
+          submitBtn.textContent = postId ? 'Update Post' : 'Publish Article';
         }
       });
     });
