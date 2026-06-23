@@ -117,7 +117,7 @@
 
       // Check auth and load edit data
       firebase.auth().onAuthStateChanged(async (user) => {
-        if (!user || user.email !== window.ProsperAuth.ADMIN_EMAIL) {
+        if (!user) {
           window.location.href = 'index.html';
           return;
         }
@@ -175,8 +175,9 @@
             alert('Post updated successfully!');
             window.location.href = `article.html?id=${postId}`;
           } else {
-            postData.authorName = 'Prospr Editorial Team';
-            postData.authorEmail = window.ProsperAuth.ADMIN_EMAIL;
+            const currentUser = window.ProsperAuth.getCurrentUser();
+            postData.authorName = currentUser.displayName || currentUser.email.split('@')[0];
+            postData.authorEmail = currentUser.email;
             const newId = await window.ProsperPosts.createPost(postData);
             alert('Post created successfully!');
             window.location.href = `article.html?id=${newId}`;

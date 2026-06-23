@@ -30,6 +30,7 @@
         html = `
           <span style="font-size:0.875rem; font-weight:600; color:var(--color-text-primary); margin-right:1rem;">Hi, ${name}</span>
           ${this.isAdmin() ? '<a href="admin.html" style="font-size:0.875rem; font-weight:600; color:var(--color-primary); margin-right:1rem; text-decoration:none;">Admin</a>' : ''}
+          <a href="create-post.html" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.875rem; margin-right:1rem; text-decoration:none;">Write Post</a>
           <button onclick="window.ProsperAuth.logout()" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size:0.875rem;">Sign Out</button>
         `;
       } else {
