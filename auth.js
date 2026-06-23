@@ -34,35 +34,14 @@
         `;
       } else {
         html = `
-          <button id="nav-sign-in-btn" data-auth-action="login" style="position:relative; z-index:99999; background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Sign In</button>
-          <button id="nav-subscribe-btn" data-auth-action="register" class="btn btn-primary" style="position:relative; z-index:99999; padding: 0.4rem 1rem; font-size:0.875rem;">Subscribe</button>
+          <button onclick="window.ProsperAuth.showLoginModal()" style="position:relative; z-index:99999; background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Sign In</button>
+          <button onclick="window.ProsperAuth.showRegisterModal()" class="btn btn-primary" style="position:relative; z-index:99999; padding: 0.4rem 1rem; font-size:0.875rem;">Subscribe</button>
         `;
       }
       
       if (headerAuth) {
         headerAuth.innerHTML = html;
         headerAuth.style.display = 'flex';
-        
-        // Attach direct listeners as a failsafe
-        setTimeout(() => {
-          const signInBtn = document.getElementById('nav-sign-in-btn');
-          if (signInBtn) signInBtn.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            e.stopPropagation();
-            try {
-              ProsperAuth.showLoginModal();
-            } catch(err) {
-              alert("Error opening modal: " + err.message);
-            }
-          });
-          
-          const subBtn = document.getElementById('nav-subscribe-btn');
-          if (subBtn) subBtn.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            e.stopPropagation();
-            ProsperAuth.showRegisterModal(); 
-          });
-        }, 50);
       }
       
       if (mobileNavAuth) {
@@ -198,15 +177,5 @@
     ProsperAuth.init();
   }
 
-  // Global event delegation for auth actions to bypass inline script blockers
-  document.addEventListener('click', (e) => {
-    const loginBtn = e.target.closest('[data-auth-action="login"]');
-    if (loginBtn) { e.preventDefault(); ProsperAuth.showLoginModal(); return; }
-    
-    const registerBtn = e.target.closest('[data-auth-action="register"]');
-    if (registerBtn) { e.preventDefault(); ProsperAuth.showRegisterModal(); return; }
-    
-    const logoutBtn = e.target.closest('[data-auth-action="logout"]');
-    if (logoutBtn) { e.preventDefault(); ProsperAuth.logout(); return; }
-  });
+  // Removed global event delegation completely as we now use reliable inline global calls
 })();
