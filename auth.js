@@ -34,8 +34,8 @@
         `;
       } else {
         html = `
-          <button data-auth-action="login" style="background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Sign In</button>
-          <button data-auth-action="register" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.875rem;">Subscribe</button>
+          <button data-auth-action="login" style="position:relative; z-index:99999; background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Sign In</button>
+          <button data-auth-action="register" class="btn btn-primary" style="position:relative; z-index:99999; padding: 0.4rem 1rem; font-size:0.875rem;">Subscribe</button>
         `;
       }
       
