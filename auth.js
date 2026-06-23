@@ -30,12 +30,12 @@
         html = `
           <span style="font-size:0.875rem; font-weight:600; color:var(--color-text-primary); margin-right:1rem;">Hi, ${name}</span>
           ${this.isAdmin() ? '<a href="admin.html" style="font-size:0.875rem; font-weight:600; color:var(--color-primary); margin-right:1rem; text-decoration:none;">Admin</a>' : ''}
-          <button onclick="window.ProsperAuth.logout()" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size:0.875rem;">Sign Out</button>
+          <button data-auth-action="logout" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size:0.875rem;">Sign Out</button>
         `;
       } else {
         html = `
-          <button onclick="window.ProsperAuth.showLoginModal()" style="background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Log In</button>
-          <button onclick="window.ProsperAuth.showRegisterModal()" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.875rem;">Subscribe</button>
+          <button data-auth-action="login" style="background:none; border:none; font-weight:600; font-family:inherit; cursor:pointer; color:var(--color-text-primary); margin-right:1rem;">Log In</button>
+          <button data-auth-action="register" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size:0.875rem;">Subscribe</button>
         `;
       }
       
@@ -89,7 +89,7 @@
           
           <div style="text-align:center; margin-top:1.5rem; font-size:0.875rem; color:var(--color-text-muted);">
             ${isLogin ? 'Don\'t have an account?' : 'Already have an account?'}
-            <a href="#" onclick="event.preventDefault(); window.ProsperAuth.${isLogin ? 'showRegisterModal()' : 'showLoginModal()'}" style="color:var(--color-primary); font-weight:600; text-decoration:none;">
+            <a href="#" data-auth-action="${isLogin ? 'register' : 'login'}" style="color:var(--color-primary); font-weight:600; text-decoration:none;">
               ${isLogin ? 'Sign up' : 'Log in'}
             </a>
           </div>
@@ -172,4 +172,16 @@
   } else {
     ProsperAuth.init();
   }
+
+  // Global event delegation for auth actions to bypass inline script blockers
+  document.addEventListener('click', (e) => {
+    const loginBtn = e.target.closest('[data-auth-action="login"]');
+    if (loginBtn) { e.preventDefault(); ProsperAuth.showLoginModal(); return; }
+    
+    const registerBtn = e.target.closest('[data-auth-action="register"]');
+    if (registerBtn) { e.preventDefault(); ProsperAuth.showRegisterModal(); return; }
+    
+    const logoutBtn = e.target.closest('[data-auth-action="logout"]');
+    if (logoutBtn) { e.preventDefault(); ProsperAuth.logout(); return; }
+  });
 })();
