@@ -102,6 +102,9 @@
       
       document.body.appendChild(overlay);
       
+      // Trigger CSS transition
+      setTimeout(() => overlay.classList.add('open'), 10);
+      
       // Close on clicking backdrop
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) this.hideAuthModal();
@@ -113,7 +116,10 @@
     
     hideAuthModal() {
       const overlay = document.getElementById('auth-modal-overlay');
-      if (overlay) overlay.remove();
+      if (overlay) {
+        overlay.classList.remove('open');
+        setTimeout(() => overlay.remove(), 300);
+      }
     },
 
     async handleFormSubmit(e, mode) {
