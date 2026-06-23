@@ -135,22 +135,10 @@
         <a href="create-post.html" class="btn btn-primary">Create New Post</a>
       </div>
       
-      <div class="admin-table-container">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Status</th>
-              <th>Views</th>
-              <th>Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="posts-tbody">
-            <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
-          </tbody>
-        </table>
+      <div class="table-container" style="background:transparent; padding:0; border:none; box-shadow:none;">
+        <div id="posts-grid" class="post-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:var(--space-6);">
+          <div style="grid-column:1/-1; text-align:center; padding:var(--space-10); color:var(--color-text-muted);">Loading posts...</div>
+        </div>
       </div>
     </div>
     
@@ -328,26 +316,45 @@
           let draftCount = 0;
           let totalViews = 0;
           
-          const tbody = document.getElementById('posts-tbody');
-          tbody.innerHTML = '';
+          const grid = document.getElementById('posts-grid');
+          grid.innerHTML = '';
+          
+          if (posts.length === 0) {
+            grid.innerHTML = '<div style="grid-column:1/-1; text-align:center;">No posts found.</div>';
+          }
           
           posts.forEach(post => {
             if (post.isDraft) draftCount++; else publishedCount++;
             totalViews += (post.viewCount || 0);
             
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td><strong>${post.title}</strong></td>
-              <td>${post.category || 'N/A'}</td>
-              <td><span class="badge ${post.isDraft ? 'badge-draft' : 'badge-published'}">${post.isDraft ? 'Draft' : 'Published'}</span></td>
-              <td>${post.viewCount || 0}</td>
-              <td>${post.createdAt ? post.createdAt.toDate().toLocaleDateString() : 'New'}</td>
-              <td>
-                <a href="create-post.html?edit=${post.id}" class="action-btn">Edit</a>
-                <span class="action-btn delete" onclick="deletePostHandler('${post.id}')">Delete</span>
-              </td>
+            const dateStr = post.createdAt ? post.createdAt.toDate().toLocaleDateString() : 'Recently';
+            const statusBadge = post.isDraft ? '<span style="position:absolute; top:12px; left:12px; background:var(--color-warning); color:#fff; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:700; z-index:2;">DRAFT</span>' : '<span style="position:absolute; top:12px; left:12px; background:var(--color-primary); color:#fff; padding:4px 8px; border-radius:4px; font-size:12px; font-weight:700; z-index:2;">PUBLISHED</span>';
+            
+            const card = document.createElement('div');
+            card.className = 'post-card reveal';
+            card.style.position = 'relative';
+            card.innerHTML = `
+              ${statusBadge}
+              <div class="post-card-image-wrapper">
+                <img src="${post.imageUrl || 'https://via.placeholder.com/600x400'}" alt="${post.title}" class="post-card-image" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://via.placeholder.com/600x400'">
+              </div>
+              <div class="post-card-content">
+                <span class="post-card-tag">${post.category || 'N/A'}</span>
+                <h3 class="post-card-title" style="margin-bottom:var(--space-2);">${post.title}</h3>
+                <div class="post-card-meta" style="margin-bottom:var(--space-4);">
+                  <span>${post.authorName || 'Prospr'}</span>
+                  <span class="dot"></span>
+                  <span>${dateStr}</span>
+                  <span class="dot"></span>
+                  <span>${post.viewCount || 0} Views</span>
+                </div>
+                <div style="display:flex; gap:var(--space-2); border-top:1px solid var(--color-border-light); padding-top:var(--space-4);">
+                  <a href="create-post.html?edit=${post.id}" class="btn btn-outline" style="flex:1; padding:var(--space-2); font-size:0.875rem; text-align:center;">Edit</a>
+                  <button onclick="deletePostHandler('${post.id}')" class="btn btn-primary" style="flex:1; padding:var(--space-2); font-size:0.875rem; background:var(--color-error); border-color:var(--color-error);">Delete</button>
+                </div>
+              </div>
             `;
-            tbody.appendChild(tr);
+            grid.appendChild(card);
           });
           
           document.getElementById('stat-published').textContent = publishedCount;
