@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seed Database</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+</head>
+<body style="padding: 50px; text-align: center; background: var(--color-bg);">
+
+  <h1 style="color: var(--color-primary); margin-bottom: 20px;">Database Seeder</h1>
+  <p style="color: var(--color-text-muted); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+    Click the button below to instantly inject 10 premium, fully written articles into your live database. Make sure you are logged in first!
+  </p>
+
+  <div id="auth-status" style="margin-bottom: 20px; font-weight: bold; color: var(--color-error);">Checking Auth Status...</div>
+
+  <button id="seed-btn" class="btn btn-primary" style="padding: 15px 30px; font-size: 1.2rem;" disabled>
+    Inject 10 Articles Now
+  </button>
+
+  <div id="status" style="margin-top: 30px; font-family: monospace; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; background: var(--color-surface); padding: 20px; border-radius: 8px;">
+    Waiting to start...
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script src="posts.js"></script>
+  <script>
+    const postsToInject = [
+      {
+        title: "The 50/30/20 Rule: How to Budget Without Feeling Restricted",
+        category: "Budgeting",
+        tags: ["budget", "saving", "personal finance"],
+        imageUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "Budgeting doesn't have to mean cutting out everything you love. Learn how the 50/30/20 rule can revolutionize your finances.",
+        content: "<p>When most people hear the word \"budget,\" they immediately think of restriction. They imagine a life devoid of morning lattes, spontaneous dinners, and vacations. But what if budgeting was actually the key to financial freedom?</p><h2>The Core Philosophy</h2><p>The 50/30/20 rule is a beautifully simple budgeting method that divides your after-tax income into three distinct buckets:</p><ul><li><strong>50% for Needs:</strong> Rent, groceries, utilities, and minimum debt payments.</li><li><strong>30% for Wants:</strong> Dining out, entertainment, hobbies, and travel.</li><li><strong>20% for Savings & Debt:</strong> Emergency funds, investments, and aggressive debt payoff.</li></ul><blockquote>By allocating a full 30% to your wants, you are giving yourself permission to enjoy your money guilt-free.</blockquote><p>Start by tracking your expenses for just one month. You might be surprised to find that your \"Needs\" category is bloated, or that your \"Wants\" have slowly crept up to 50% of your income. Adjusting these ratios is the first step toward lasting wealth.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "Index Funds vs. Mutual Funds: Which is Better for Beginners?",
+        category: "Investing",
+        tags: ["investing", "stocks", "wealth"],
+        imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "Navigating the stock market can be intimidating. Here is a breakdown of why Index Funds are often the superior choice for new investors.",
+        content: "<p>Investing your money is the most reliable path to building long-term wealth, but the sheer number of options can paralyze a beginner. The two most common terms you will hear are Index Funds and Mutual Funds. But what is the difference?</p><h2>Active vs. Passive Management</h2><p>A mutual fund is <strong>actively managed</strong>. This means a team of highly paid Wall Street professionals is actively buying and selling stocks, trying to \"beat the market.\" Because of this active management, mutual funds charge high fees (often 1% to 2% of your total investment per year).</p><p>An index fund is <strong>passively managed</strong>. It simply tracks a specific market index, like the S&P 500 (the 500 largest companies in the US). A computer algorithm buys the stocks, so the fees are incredibly low (often 0.04%).</p><blockquote>Over a 15-year period, more than 90% of actively managed mutual funds actually perform worse than a simple S&P 500 index fund.</blockquote><p>For beginners, the math is clear. Low fees and consistent market returns make index funds the undisputed champion of long-term wealth building.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "How to Build a 6-Month Emergency Fund Fast",
+        category: "Saving",
+        tags: ["emergency fund", "saving", "finance"],
+        imageUrl: "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "Life is unpredictable. Having 6 months of living expenses saved provides the ultimate peace of mind. Here is how to build it quickly.",
+        content: "<p>If the last few years have taught us anything, it is that the unexpected can and will happen. Whether it is a sudden job loss, a medical emergency, or a major car repair, an emergency fund is the only thing standing between a minor inconvenience and financial ruin.</p><h2>Calculate Your Target</h2><p>First, you need to know exactly how much you need. Calculate your bare-bones living expenses for one month. This includes rent, groceries, essential utilities, and minimum debt payments. Do not include dining out or entertainment. Multiply that number by six.</p><h2>Strategies to Fund it Fast</h2><ul><li><strong>The High-Yield Vault:</strong> Open a High-Yield Savings Account (HYSA) completely separate from your daily checking account. Out of sight, out of mind.</li><li><strong>Automated Transfers:</strong> Set up an automatic transfer on payday. Treat your savings like a mandatory bill that must be paid.</li><li><strong>Sell the Clutter:</strong> Spend one weekend selling unused electronics, furniture, or clothes online. This can inject hundreds of dollars into your fund immediately.</li></ul><blockquote>An emergency fund isn't just about money; it's about buying the freedom to sleep peacefully at night.</blockquote><p>Start small if you need to. Aim for $1,000 first, then push for three months, and eventually, you will reach the six-month milestone.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "Stealth Wealth: Why True Rich People Don't Wear Flashy Brands",
+        category: "Lifestyle",
+        tags: ["wealth", "minimalism", "mindset"],
+        imageUrl: "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "The loudest person in the room is rarely the wealthiest. Discover the concept of stealth wealth and intentional living.",
+        content: "<p>If you close your eyes and picture a millionaire, you might imagine someone driving a bright red Ferrari, wearing a logo-covered designer jacket, and flashing a diamond watch. But data suggests that the vast majority of true millionaires look nothing like this.</p><h2>The Illusion of Wealth</h2><p>Many people who display flashy luxury goods are actually drowning in debt. They are participating in \"performative wealth\"—spending money they don't have to impress people they don't know. </p><h2>Enter Stealth Wealth</h2><p>Stealth wealth is the practice of keeping your financial success private. It is characterized by high-quality, unbranded clothing, reliable but understated vehicles, and a focus on experiences rather than possessions.</p><blockquote>Wealth is what you don't see. It's the cars not purchased, the diamonds not bought, and the first-class upgrades declined.</blockquote><p>By adopting a stealth wealth mindset, you free yourself from the exhausting cycle of keeping up with the Joneses. You can quietly compound your investments, enjoy premium quality without the flashy logos, and live a life of true financial security.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "7 High-Income Skills You Can Learn for Free Online",
+        category: "Career",
+        tags: ["career", "skills", "side hustle"],
+        imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "You don't need an expensive college degree to increase your earning potential. Here are 7 high-income skills you can master from your living room.",
+        content: "<p>In the digital age, your earning potential is largely determined by your skill set, not your college degree. A \"high-income skill\" is any specialized ability that employers or clients are willing to pay a premium for. The best part? Most of them can be learned entirely for free online.</p><h2>Top Skills to Master</h2><ul><li><strong>Copywriting:</strong> The ability to write persuasive text that sells products or services. Every business on earth needs good copywriters.</li><li><strong>Data Analysis:</strong> Learning SQL and basic Python to help businesses make sense of their data is incredibly lucrative.</li><li><strong>SEO (Search Engine Optimization):</strong> Knowing how to rank websites on the first page of Google is a superpower in the digital marketing world.</li><li><strong>Web Development:</strong> Basic HTML, CSS, and JavaScript are still highly sought after.</li></ul><blockquote>Your income is directly correlated to the difficulty of the problems you can solve for other people.</blockquote><p>YouTube, Coursera, and freecodecamp are excellent starting points. Dedicate just one hour a day to learning a high-income skill, and within a year, you could entirely change your financial trajectory.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "The \"Cost Per Use\" Rule: How to Buy High-Quality Things Without Guilt",
+        category: "Lifestyle",
+        tags: ["spending", "minimalism", "quality"],
+        imageUrl: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "Sometimes, buying the more expensive item is actually the cheaper financial decision in the long run. Here is the math behind it.",
+        content: "<p>We are often told that being frugal means buying the absolute cheapest item available. But this mindset can actually trap you in a cycle of constantly replacing cheap, broken goods. Enter the \"Cost Per Use\" rule.</p><h2>The Math Behind the Method</h2><p>Cost Per Use (CPU) is a simple formula: <strong>Total Price ÷ Number of Times Used = Cost Per Use</strong>.</p><p>Imagine you need a new winter coat. Option A is a fast-fashion coat for $50. It looks okay, but it's thin and will likely fall apart after one winter (let's say 50 wears). The CPU is $1.00.</p><p>Option B is a premium, high-quality wool coat for $250. It's built to last a decade. If you wear it 50 times a year for 10 years (500 wears), the CPU is just $0.50.</p><blockquote>The bitterness of poor quality remains long after the sweetness of low price is forgotten.</blockquote><p>By applying this rule to items you use daily—like mattresses, shoes, and office chairs—you can justify investing in premium quality. You'll enjoy a better experience and actually save money over your lifetime.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "How to Ask for a Raise (And Actually Get It)",
+        category: "Career",
+        tags: ["career", "salary", "negotiation"],
+        imageUrl: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "Asking for a raise is terrifying for most people. Learn the exact framework to prove your value and negotiate a higher salary.",
+        content: "<p>Asking for a raise is one of the most nerve-wracking conversations you will ever have in your professional life. But avoiding it out of fear can cost you hundreds of thousands of dollars over the course of your career.</p><h2>The \"Brag Sheet\" Strategy</h2><p>You cannot simply ask for a raise because inflation is high or because you want to buy a house. Your employer pays for value. You must prove you are delivering more value than you are currently being paid for.</p><p>Spend a month building a \"Brag Sheet.\" Document every time you saved the company money, brought in a new client, streamlined a process, or worked late to meet a critical deadline. Quantify your achievements with hard numbers whenever possible.</p><blockquote>Never apologize for knowing your worth and politely asking to be compensated for it.</blockquote><h2>The Conversation</h2><p>Schedule a dedicated meeting with your manager. Do not spring this on them casually. Present your Brag Sheet, outline the expanded responsibilities you have taken on, and state your desired salary figure confidently. If they say no, ask them exactly what metrics you need to hit in the next 6 months to get a \"yes,\" and get it in writing.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "Good Debt vs. Bad Debt: Yes, There is a Difference",
+        category: "Finance",
+        tags: ["debt", "credit", "finance"],
+        imageUrl: "https://images.unsplash.com/photo-1580519542036-ed47c730f488?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "Not all debt is evil. Understanding the difference between leveraging good debt and drowning in bad debt is the key to wealth.",
+        content: "<p>In the personal finance world, debt is often treated like a four-letter word. We are told to avoid it at all costs, cut up our credit cards, and pay for everything in cash. While this is great advice for chronic over-spenders, it ignores a fundamental truth of wealth building: not all debt is created equal.</p><h2>Bad Debt: The Wealth Destroyer</h2><p>Bad debt is money you borrow to purchase a depreciating asset. The worst offender is high-interest credit card debt used to buy consumer goods like clothes, electronics, or vacations. A 22% APR on a credit card balance will actively destroy your financial future.</p><h2>Good Debt: The Wealth Accelerator</h2><p>Good debt is money you borrow at a low interest rate to purchase an asset that will <em>increase</em> in value or generate income. </p><ul><li><strong>A Mortgage:</strong> Borrowing money at a reasonable rate to buy a home that appreciates over time.</li><li><strong>A Business Loan:</strong> Borrowing money to scale a profitable business.</li></ul><blockquote>Wealthy people use debt as a tool to acquire income-producing assets. Poor people use debt to acquire liabilities.</blockquote><p>Before taking on any debt, ask yourself: \"Is this purchase going to put money back in my pocket in the future?\" If the answer is no, save up and pay cash.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "How Compound Interest Actually Works",
+        category: "Investing",
+        tags: ["investing", "wealth", "basics"],
+        imageUrl: "https://images.unsplash.com/photo-1616091093714-c64882e9ab55?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "Albert Einstein allegedly called compound interest the 8th wonder of the world. Here is the math behind why it is the secret to getting rich.",
+        content: "<p>You have probably heard that you need to start investing early to take advantage of \"compound interest.\" But what does that actually mean? Why is a 20-year-old investing $100 a month in a drastically better position than a 40-year-old investing $500 a month?</p><h2>Interest on Top of Interest</h2><p>Simple interest means you only earn money on your original investment. Compound interest means you earn money on your original investment, <em>plus</em> all the interest you have already earned.</p><p>Imagine a snowball rolling down a massive snowy hill. At first, it just gathers a little bit of snow. But as it gets bigger, it has more surface area, so it picks up even more snow with every single rotation. Eventually, it becomes an unstoppable avalanche. That is compound interest.</p><blockquote>He who understands compound interest, earns it. He who doesn't, pays it.</blockquote><p>The math is staggering. If you invest just $300 a month into an S&P 500 index fund starting at age 25, assuming an average 8% return, you will have over $1,000,000 by age 65. The vast majority of that million dollars is pure interest that your money earned for you while you slept. The key is to start <strong>now</strong>.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      },
+      {
+        title: "How to Host an Incredible Dinner Party on a Budget",
+        category: "Lifestyle",
+        tags: ["lifestyle", "budget", "social"],
+        imageUrl: "https://images.unsplash.com/photo-1559314809-0d155014e29e?q=80&w=1200&auto=format&fit=crop",
+        excerpt: "You don't need to spend $300 to entertain your friends. Discover how to throw a memorable, premium dinner party without breaking the bank.",
+        content: "<p>Going out to dinner with friends has become incredibly expensive. A few drinks, an entree, and a tip can easily set you back $100 per person. Hosting a dinner party at home is a sophisticated, intimate alternative, but many people fear it will be just as expensive. It doesn't have to be.</p><h2>Focus on Atmosphere, Not Just Food</h2><p>The secret to a great dinner party is the ambiance. Dim the overhead lights, light several cheap unscented candles, and put on a curated jazz or lo-fi playlist. A beautiful atmosphere makes even the simplest food feel premium.</p><h2>The Strategic Menu</h2><p>Do not try to cook steaks or fresh seafood for 8 people. The best dinner party foods are cheap to produce in massive quantities.</p><ul><li><strong>Pasta:</strong> A giant pot of homemade Cacio e Pepe or a slow-simmered bolognese looks beautiful on the table and costs pennies per serving.</li><li><strong>Taco Bar:</strong> Slow-cook a pork shoulder (one of the cheapest cuts of meat) and set out bowls of fresh cilantro, onions, and tortillas.</li></ul><blockquote>Hospitality is about making your guests feel seen and comfortable, not about showing off your culinary budget.</blockquote><p>Finally, don't be afraid to make it a potluck-hybrid. Tell your guests, \"I am making a massive pot of homemade pasta, please just bring a bottle of wine or a simple dessert!\" Everyone wins, and you get to enjoy a premium night in for less than $30.</p>",
+        isDraft: false,
+        isPublished: true,
+        authorName: "Prospr Editorial"
+      }
+    ];
+
+    const btn = document.getElementById('seed-btn');
+    const statusDiv = document.getElementById('status');
+    const authStatusDiv = document.getElementById('auth-status');
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        authStatusDiv.textContent = "Authenticated as: " + user.email;
+        authStatusDiv.style.color = "var(--color-primary)";
+        btn.disabled = false;
+      } else {
+        authStatusDiv.textContent = "You must be logged in to inject posts!";
+        authStatusDiv.style.color = "var(--color-error)";
+        btn.disabled = true;
+      }
+    });
+
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      statusDiv.innerHTML = "Initializing injection sequence...<br>";
+      
+      try {
+        let successCount = 0;
+        for (let i = 0; i < postsToInject.length; i++) {
+          const post = postsToInject[i];
+          statusDiv.innerHTML += `Pushing post ${i+1}/10: "${post.title}"...<br>`;
+          await window.ProsperPosts.createPost(post);
+          successCount++;
+          statusDiv.scrollTop = statusDiv.scrollHeight;
+        }
+        statusDiv.innerHTML += `<br><span style="color:var(--color-primary); font-weight:bold;">Successfully injected ${successCount} posts!</span><br>You can now go back to your homepage.`;
+      } catch (err) {
+        statusDiv.innerHTML += `<br><span style="color:var(--color-error);">Error: ${err.message}</span>`;
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
