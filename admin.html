@@ -26,7 +26,7 @@
     .admin-gate.open { opacity: 1; pointer-events: auto; }
     
     .admin-card {
-      background: #fff; padding: var(--space-8); border-radius: 14px;
+      background: var(--color-surface); padding: var(--space-8); border-radius: 14px;
       width: 100%; max-width: 400px; text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
@@ -54,15 +54,15 @@
     .tab-pane.active { display: block; }
     
     .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-6); margin-bottom: var(--space-8); }
-    .stat-card { background: #fff; border: 1px solid #e2e5ea; padding: var(--space-6); border-radius: 14px; text-align: center; }
+    .stat-card { background: var(--color-surface); border: 1px solid var(--color-border-light); padding: var(--space-6); border-radius: 14px; text-align: center; }
     .stat-number { font-size: 3rem; font-weight: 700; color: var(--color-primary); line-height: 1; margin-bottom: var(--space-2); }
     .stat-label { color: var(--color-text-muted); font-weight: 500; }
     
-    .admin-table-container { background: #fff; border: 1px solid #e2e5ea; border-radius: 14px; overflow: hidden; }
+    .admin-table-container { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: 14px; overflow: hidden; }
     .admin-table { width: 100%; border-collapse: collapse; text-align: left; }
-    .admin-table th, .admin-table td { padding: 1rem; border-bottom: 1px solid #e2e5ea; }
-    .admin-table th { background: #f8f9fb; font-weight: 600; color: var(--color-text-muted); }
-    .admin-table tr:hover { background: #f8f9fb; }
+    .admin-table th, .admin-table td { padding: 1rem; border-bottom: 1px solid var(--color-border-light); }
+    .admin-table th { background: var(--color-bg-subtle); font-weight: 600; color: var(--color-text-muted); }
+    .admin-table tr:hover { background: var(--color-bg-subtle); }
     
     .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
     .badge-published { background: #e3fcef; color: #006644; }

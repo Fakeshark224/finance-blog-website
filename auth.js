@@ -89,10 +89,10 @@
       overlay.id = 'auth-modal-overlay';
       
       // Inline styles for modal that aren't in style.css
-      overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(27,42,74,0.8); display:flex; justify-content:center; align-items:center; z-index:9999; backdrop-filter:blur(4px);';
+      overlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:9999; backdrop-filter:blur(4px);';
       
       overlay.innerHTML = `
-        <div class="auth-modal" style="background:#fff; padding:2rem; border-radius:12px; width:100%; max-width:400px; position:relative; box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+        <div class="auth-modal" style="background:var(--color-surface); padding:2rem; border-radius:12px; width:100%; max-width:400px; position:relative; box-shadow:var(--shadow-lg);">
           <button onclick="window.ProsperAuth.hideAuthModal()" class="auth-close" style="position:absolute; top:1rem; right:1rem; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--color-text-muted);">&times;</button>
           <h2 style="margin-bottom:0.5rem; font-size:1.5rem; color:var(--color-text-primary);">${isLogin ? 'Welcome Back' : 'Join Prospr'}</h2>
           <p style="color:var(--color-text-muted); margin-bottom:1.5rem; font-size:0.875rem;">${isLogin ? 'Log in to continue your financial journey.' : 'Subscribe to save articles and get our newsletter.'}</p>
