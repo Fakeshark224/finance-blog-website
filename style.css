@@ -751,7 +751,7 @@ body.dark-mode .theme-toggle .moon-icon { display: block; }
 .post-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-8);
+  gap: var(--space-6);
 }
 
 /* Post Card */
@@ -790,7 +790,7 @@ body.dark-mode .theme-toggle .moon-icon { display: block; }
   transform: scale(1.05);
 }
 
-.post-card-body {
+.post-card-content {
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
