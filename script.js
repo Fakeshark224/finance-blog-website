@@ -262,7 +262,7 @@
           const adContainer = document.createElement('div');
           adContainer.className = 'in-feed-ad';
           adContainer.style.gridColumn = '1 / -1'; // span full width
-          adContainer.style.margin = '2rem 0';
+          adContainer.style.margin = '0';
           adContainer.innerHTML = `
             <ins class="adsbygoogle"
                  style="display:block"

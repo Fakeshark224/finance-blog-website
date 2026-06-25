@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fix Images</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore-compat.js"></script>
+</head>
+<body style="padding: 50px; text-align: center; background: var(--color-bg);">
+  <h1 style="color: var(--color-primary);">Image Fixer Utility</h1>
+  <p style="margin-bottom: 20px;">Click the button below to assign a 100% unique image to every single post on your blog.</p>
+  
+  <button id="fix-btn" class="btn btn-primary" style="padding: 15px 30px;">Make All Images Unique</button>
+  <div id="status" style="margin-top: 20px; font-family: monospace;">Waiting...</div>
+
+  <script src="firebase-config.js"></script>
+  <script>
+    document.getElementById('fix-btn').addEventListener('click', async () => {
+      const status = document.getElementById('status');
+      const db = firebase.firestore();
+      
+      status.innerHTML = "Fetching all posts...<br>";
+      
+      try {
+        const snapshot = await db.collection('posts').get();
+        let count = 0;
+        
+        const batch = db.batch();
+        
+        snapshot.docs.forEach(doc => {
+          // Use picsum with a unique seed based on the post ID so it never repeats
+          const uniqueImage = `https://picsum.photos/seed/${doc.id}/800/500`;
+          const ref = db.collection('posts').doc(doc.id);
+          batch.update(ref, { imageUrl: uniqueImage });
+          count++;
+        });
+        
+        status.innerHTML += `Updating ${count} posts with unique images...<br>`;
+        await batch.commit();
+        
+        status.innerHTML += `<span style="color:green; font-weight:bold;">Success! All ${count} posts now have completely unique images. You can go check your homepage.</span>`;
+      } catch (err) {
+        status.innerHTML += `<span style="color:red;">Error: ${err.message}</span>`;
+      }
+    });
+  </script>
+</body>
+</html>
