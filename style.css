@@ -771,7 +771,7 @@ body.dark-mode .theme-toggle .moon-icon { display: block; }
 .post-card {
   display: flex;
   flex-direction: column;
-  background: var(--color-bg);
+  background: var(--color-surface);
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -2290,7 +2290,7 @@ body.dark-mode .theme-toggle .moon-icon { display: block; }
 }
 
 .nav-dropdown-item.logout:hover {
-  background: #FEF2F2;
+  background: rgba(220, 38, 38, 0.1);
 }
 
 .nav-dropdown-divider {
@@ -2368,7 +2368,7 @@ body.dark-mode .theme-toggle .moon-icon { display: block; }
   outline: none;
   border-color: var(--color-gold);
   box-shadow: 0 0 0 4px var(--color-gold-light);
-  background: #FFF;
+  background: var(--color-bg-subtle);
 }
 
 .premium-textarea {
