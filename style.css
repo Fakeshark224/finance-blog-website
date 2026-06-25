@@ -8,28 +8,28 @@
 
 /* ---------- CSS Custom Properties ---------- */
 :root {
-  /* Colors — Navy + Gold Finance Theme */
-  --color-bg:           #FFFFFF;
-  --color-bg-subtle:    #FAFBFC;
-  --color-surface:      #F0F2F5;
-  --color-border:       #E2E5EA;
-  --color-border-light: #EEF0F3;
-  --color-text-primary: #1A1A2E;
-  --color-text-secondary: #5A6270;
-  --color-text-muted:   #8E95A2;
-  --color-accent:       #1B2A4A;
-  --color-accent-hover: #0F1D36;
-  --color-accent-light: #E8ECF2;
-  --color-gold:         #C4972F;
-  --color-gold-hover:   #A87E22;
-  --color-gold-light:   #FDF6E8;
-  --color-overlay:      rgba(0, 0, 0, 0.03);
-  --color-success:      #22A06B;
-  --color-error:        #DE350B;
-  --color-warning:      #FF991F;
-  --color-ad-bg:        #FAFBFC;
-  --color-ad-border:    #E8ECF2;
-  --color-ad-label:     #B0B5BF;
+  /* Light Mode - Premium Corporate Palette */
+  --color-bg:           #FCFCFD;
+  --color-bg-subtle:    #F8F9FA;
+  --color-surface:      #FFFFFF;
+  --color-border:       #E4E7EB;
+  --color-border-light: #F0F2F5;
+  --color-text-primary: #111418;
+  --color-text-secondary: #475467;
+  --color-text-muted:   #98A2B3;
+  --color-accent:       #0F172A;
+  --color-accent-hover: #1E293B;
+  --color-accent-light: #F1F5F9;
+  --color-gold:         #B68D40;
+  --color-gold-hover:   #967232;
+  --color-gold-light:   #FDF9F1;
+  --color-overlay:      rgba(0, 0, 0, 0.04);
+  --color-success:      #059669;
+  --color-error:        #DC2626;
+  --color-warning:      #D97706;
+  --color-ad-bg:        #F8F9FA;
+  --color-ad-border:    #E4E7EB;
+  --color-ad-label:     #98A2B3;
 
   /* Typography */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -62,7 +62,7 @@
   --max-width:        1200px;
   --max-width-narrow: 720px;
   --sidebar-width:    340px;
-  --header-height:    64px;
+  --header-height:    72px; /* Slightly taller for a more premium feel */
 
   /* Transitions */
   --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
@@ -71,11 +71,11 @@
   --duration-normal: 300ms;
   --duration-slow:   500ms;
 
-  /* Shadows */
-  --shadow-sm:  0 1px 3px rgba(27,42,74,0.06);
-  --shadow-md:  0 4px 16px rgba(27,42,74,0.08);
-  --shadow-lg:  0 12px 36px rgba(27,42,74,0.12);
-  --shadow-gold: 0 4px 20px rgba(196,151,47,0.15);
+  /* Shadows - Refined for depth */
+  --shadow-sm:  0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md:  0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg:  0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-gold: 0 4px 16px rgba(182, 141, 64, 0.15);
 
   /* Radius */
   --radius-sm: 6px;
@@ -85,31 +85,31 @@
   --radius-full: 9999px;
 }
 
-/* ---------- Dark Mode Variables ---------- */
+/* ---------- Dark Mode Variables (OLED Charcoal) ---------- */
 body.dark-mode {
-  --color-bg:           #0D1117;
-  --color-bg-subtle:    #131920;
-  --color-surface:      #1A2233;
-  --color-border:       #2A3548;
-  --color-border-light: #1E2A3D;
-  --color-text-primary: #E6EDF3;
-  --color-text-secondary: #9EAAB8;
-  --color-text-muted:   #6B7A8D;
-  --color-accent:       #4A7ADB;
-  --color-accent-hover: #6B96E8;
-  --color-accent-light: #1A2845;
-  --color-gold:         #D4A940;
-  --color-gold-hover:   #E0BC5A;
-  --color-gold-light:   #2A2210;
-  --color-overlay:      rgba(255, 255, 255, 0.04);
-  --color-ad-bg:        #131920;
-  --color-ad-border:    #2A3548;
-  --color-ad-label:     #4A5568;
+  --color-bg:           #09090B;
+  --color-bg-subtle:    #121214;
+  --color-surface:      #18181B;
+  --color-border:       #27272A;
+  --color-border-light: #1F1F22;
+  --color-text-primary: #FAFAFA;
+  --color-text-secondary: #A1A1AA;
+  --color-text-muted:   #71717A;
+  --color-accent:       #FAFAFA;
+  --color-accent-hover: #E4E4E7;
+  --color-accent-light: #27272A;
+  --color-gold:         #D4A346;
+  --color-gold-hover:   #F3C363;
+  --color-gold-light:   #302410;
+  --color-overlay:      rgba(255, 255, 255, 0.05);
+  --color-ad-bg:        #121214;
+  --color-ad-border:    #27272A;
+  --color-ad-label:     #52525B;
 
-  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
-  --shadow-lg:  0 12px 36px rgba(0,0,0,0.6);
-  --shadow-gold: 0 4px 20px rgba(212,169,64,0.2);
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.6);
+  --shadow-md:  0 8px 24px rgba(0,0,0,0.7);
+  --shadow-lg:  0 16px 48px rgba(0,0,0,0.8);
+  --shadow-gold: 0 4px 24px rgba(212, 163, 70, 0.25);
 }
 
 /* ---------- Reset & Base ---------- */
@@ -200,13 +200,16 @@ input, textarea, select {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 1000;
-  background: var(--color-bg);
+  z-index: 100;
+  background: rgba(252, 252, 253, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--color-border-light);
   height: var(--header-height);
-  transition: background var(--duration-normal) var(--ease-in-out),
-              border-color var(--duration-normal) var(--ease-in-out),
-              box-shadow var(--duration-normal) var(--ease-in-out);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+body.dark-mode .site-header {
+  background: rgba(9, 9, 11, 0.75);
 }
 
 .site-header.scrolled {
@@ -318,6 +321,16 @@ body.dark-mode .site-header.scrolled {
 .theme-toggle svg {
   width: 18px;
   height: 18px;
+  transition: color var(--duration-fast), transform var(--duration-normal) var(--ease-out);
+}
+
+.theme-toggle:hover svg {
+  color: var(--color-gold);
+  transform: rotate(30deg);
+}
+
+body.dark-mode .theme-toggle:hover svg {
+  transform: rotate(-30deg);
 }
 
 .theme-toggle .sun-icon { display: block; }
@@ -2482,5 +2495,24 @@ body.dark-mode .theme-toggle .moon-icon { display: block; }
 
 .article-body li {
   margin-bottom: var(--space-2);
+}
+
+
+/* ========================================================================
+   Global UI/UX Enhancements
+   ======================================================================== */
+
+button, a.btn, input[type='submit'] {
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+button:hover:not(:disabled), a.btn:hover, input[type='submit']:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+button:active:not(:disabled), a.btn:active, input[type='submit']:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
