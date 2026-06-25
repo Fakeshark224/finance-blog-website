@@ -95,9 +95,9 @@ body.dark-mode {
   --color-text-primary: #FAFAFA;
   --color-text-secondary: #A1A1AA;
   --color-text-muted:   #71717A;
-  --color-accent:       #FAFAFA;
-  --color-accent-hover: #E4E4E7;
-  --color-accent-light: #27272A;
+  --color-accent:       #27272A;
+  --color-accent-hover: #3F3F46;
+  --color-accent-light: #18181B;
   --color-gold:         #D4A346;
   --color-gold-hover:   #F3C363;
   --color-gold-light:   #302410;
