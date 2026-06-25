@@ -51,7 +51,7 @@
       return { id: doc.id, ...doc.data() };
     },
 
-    async getAllPosts(limitCount = 12) {
+    async getAllPosts(limitCount = 150) {
       const snapshot = await db.collection(COLLECTION)
         .where('isPublished', '==', true)
         .get();
@@ -66,7 +66,7 @@
       return posts.slice(0, limitCount);
     },
 
-    async getPostsByCategory(category, limitCount = 12) {
+    async getPostsByCategory(category, limitCount = 150) {
       if (category === 'All') return this.getAllPosts(limitCount);
       const snapshot = await db.collection(COLLECTION)
         .where('isPublished', '==', true)
