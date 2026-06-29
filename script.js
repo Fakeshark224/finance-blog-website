@@ -23,6 +23,40 @@
       if (document.body.classList.contains('article-layout') || document.getElementById('article-body')) {
         this.initArticlePage();
       }
+
+      this.initMobileNotice();
+    },
+
+    // 0. MOBILE NOTICE
+    initMobileNotice() {
+      if (window.innerWidth > 768) return;
+      if (localStorage.getItem('prospr_mobile_notice_dismissed') === 'true') return;
+      
+      const popup = document.createElement('div');
+      popup.innerHTML = `
+        <div id="mobile-notice-popup" style="position:fixed; bottom:20px; left:20px; right:20px; background:var(--color-surface); border:1px solid var(--color-border); border-radius:12px; padding:16px; z-index:9999; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; gap:12px; transform:translateY(150%); transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <p style="margin:0; font-size:14px; font-weight:500; color:var(--color-text-primary); line-height:1.5;">For the best experience, we recommend viewing Prospr on a desktop device.</p>
+            <button id="close-mobile-notice" style="background:transparent; border:none; padding:4px; margin-left:12px; margin-top:-2px; cursor:pointer; color:var(--color-text-secondary); display:flex; align-items:center; justify-content:center;">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(popup);
+      
+      // Animate in
+      setTimeout(() => {
+        const modal = document.getElementById('mobile-notice-popup');
+        if (modal) modal.style.transform = 'translateY(0)';
+      }, 500);
+
+      document.getElementById('close-mobile-notice').addEventListener('click', () => {
+        const modal = document.getElementById('mobile-notice-popup');
+        if (modal) modal.style.transform = 'translateY(150%)';
+        localStorage.setItem('prospr_mobile_notice_dismissed', 'true');
+        setTimeout(() => popup.remove(), 400);
+      });
     },
 
     // 1. HEADER SCROLL
