@@ -414,13 +414,18 @@ body.dark-mode .theme-toggle .moon-icon { display: block; }
   z-index: 999;
   transform: translateY(-100%);
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transition: transform var(--duration-normal) var(--ease-out),
-              opacity var(--duration-normal) var(--ease-out);
+              opacity var(--duration-normal) var(--ease-out),
+              visibility var(--duration-normal) var(--ease-out);
 }
 
 .mobile-nav.open {
   transform: translateY(0);
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .mobile-nav a {
